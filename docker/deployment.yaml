@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cloud-config
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: "25%"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: cloud-config
+    spec:
+      containers:
+        - name: cloud-config
+          image: gcr.io/challenge-scotiabank/cloud-config:1.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8888
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "0.25"
+            limits:
+              memory: "512Mi"
+              cpu: "0.5"
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /ms-seed-rest/default
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /ms-seed-rest/default
+            initialDelaySeconds: 30
+            periodSeconds: 1
+            failureThreshold: 30
