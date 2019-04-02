@@ -30,14 +30,14 @@ spec:
           livenessProbe:
             httpGet:
               port: http
-              path: /ms-seed-rest/default
+              path: /ms-blocks-rest/default
             initialDelaySeconds: 60
             periodSeconds: 5
             failureThreshold: 3
           readinessProbe:
             httpGet:
               port: http
-              path: /ms-seed-rest/default
+              path: /ms-blocks-rest/default
             initialDelaySeconds: 30
             periodSeconds: 1
             failureThreshold: 30
